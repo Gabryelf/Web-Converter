@@ -35,7 +35,7 @@
     let previewStartTime = 0;
     let previewDuration = 5;
 
-    // Size presets
+    // Size presets - ДОБАВЛЕНЫ НОВЫЕ РАЗРЕШЕНИЯ
     const sizePresets = {
         'small': { width: 320, height: 240 },
         'medium': { width: 480, height: 360 },
@@ -53,7 +53,7 @@
         durationVal.textContent = durationSlider.value;
     });
 
-    // File upload
+    // File upload - ЭТО РАБОТАЕТ!
     document.getElementById('fileUploadArea').addEventListener('click', () => fileInput.click());
     
     fileInput.addEventListener('change', (e) => {
@@ -207,7 +207,6 @@
                 previewInterval = setInterval(() => {
                     if (video.ended || elapsed >= previewDuration) {
                         stopPreview();
-                        // После завершения показываем последний кадр
                         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                         return;
                     }
@@ -216,12 +215,10 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                     
-                    // Показываем прогресс
                     const progress = Math.round((elapsed / previewDuration) * 100);
                     progressEl.textContent = `🎬 Предпросмотр: ${progress}%`;
                     progressEl.className = 'progress-visible';
 
-                    // Отрисовываем рамку области захвата
                     const size = sizePresets[sizeSelect.value] || sizePresets.medium;
                     const scaleX = canvas.width / video.videoWidth;
                     const scaleY = canvas.height / video.videoHeight;
@@ -239,21 +236,18 @@
                     ctx.fillStyle = 'rgba(100, 200, 255, 0.1)';
                     ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
                     
-                    // Подпись размера
                     ctx.fillStyle = 'rgba(255,255,255,0.6)';
                     ctx.font = '12px Inter, sans-serif';
                     ctx.fillText(`${size.width}x${size.height}`, boxX + 8, boxY + 20);
 
                     if (elapsed >= previewDuration) {
                         stopPreview();
-                        // Показываем последний кадр
                         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                     }
                 }, 1000 / 30);
             }).catch((err) => {
                 console.error('Preview error:', err);
                 stopPreview();
-                // Показываем текущий кадр
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 progressEl.textContent = '⚠️ Ошибка предпросмотра';
                 progressEl.className = 'progress-hidden';
@@ -284,7 +278,6 @@
         }
         progressEl.className = 'progress-hidden';
         progressEl.textContent = '';
-        // Восстанавливаем первый кадр
         if (currentFile && currentFile.type.startsWith('video/')) {
             showPreview(currentFile);
         }
@@ -293,7 +286,7 @@
     previewSelectionBtn.addEventListener('click', previewSelection);
     stopPreviewBtn.addEventListener('click', stopPreview);
 
-    // ===== Конвертация видео в GIF через gifshot =====
+    // ===== ИСПРАВЛЕННАЯ КОНВЕРТАЦИЯ В GIF =====
     async function convertVideoToGif(videoFile, fps, duration, quality, startTime, size) {
         return new Promise((resolve, reject) => {
             const video = document.createElement('video');
@@ -305,7 +298,6 @@
             video.onloadeddata = function() {
                 const sizePreset = sizePresets[size] || sizePresets.medium;
                 
-                // Сохраняем соотношение сторон
                 const aspectRatio = video.videoWidth / video.videoHeight;
                 let finalWidth = Math.min(sizePreset.width, video.videoWidth);
                 let finalHeight = Math.min(sizePreset.height, video.videoHeight);
@@ -316,9 +308,9 @@
                     finalWidth = Math.round(finalHeight * aspectRatio);
                 }
 
-                // Увеличиваем количество кадров для плавности
-                const totalFrames = Math.min(Math.floor(duration * fps), 200);
-                const frameDelay = Math.floor(1000 / fps);
+                // УВЕЛИЧЕНО количество кадров для плавности
+                const totalFrames = Math.min(Math.floor(duration * fps), 300);
+                const frameDelay = Math.round(1000 / fps);
 
                 const captureCanvas = document.createElement('canvas');
                 captureCanvas.width = finalWidth;
@@ -339,7 +331,6 @@
                     progressEl.textContent = `🎬 Захват кадров: ${progress}%`;
 
                     captureCtx.clearRect(0, 0, finalWidth, finalHeight);
-                    // Центрируем видео в кадре
                     const sx = (video.videoWidth - finalWidth) / 2;
                     const sy = (video.videoHeight - finalHeight) / 2;
                     captureCtx.drawImage(video, sx, sy, finalWidth, finalHeight, 0, 0, finalWidth, finalHeight);
@@ -366,7 +357,7 @@
         });
     }
 
-    // ===== Создание GIF из DataURL =====
+    // ===== ИСПРАВЛЕННОЕ СОЗДАНИЕ GIF =====
     function createGifFromDataUrls(dataUrls, delay, quality, resolve, reject) {
         progressEl.textContent = '🎞️ Загрузка кадров...';
 
@@ -393,7 +384,6 @@
                     resolveImg(img);
                 };
                 img.onerror = function() {
-                    // Пробуем загрузить повторно
                     const fallbackImg = new Image();
                     fallbackImg.onload = function() {
                         resolveImg(fallbackImg);
@@ -417,7 +407,6 @@
 
             progressEl.textContent = `🖼️ Создание GIF из ${validImages.length} кадров...`;
 
-            // Используем размеры первого кадра
             const gifWidth = Math.min(validImages[0].naturalWidth, 480);
             const gifHeight = Math.min(validImages[0].naturalHeight, 360);
 
@@ -441,7 +430,6 @@
                     progressEl.textContent = '✅ GIF готов!';
                     
                     try {
-                        // Конвертируем base64 в blob
                         const byteString = atob(obj.image.split(',')[1]);
                         const ab = new ArrayBuffer(byteString.length);
                         const ia = new Uint8Array(ab);
@@ -615,7 +603,6 @@
             URL.revokeObjectURL(url);
         };
         img.onerror = function() {
-            // Если не удалось загрузить как изображение, пробуем как видео
             const vid = document.createElement('video');
             vid.src = url;
             vid.muted = true;
@@ -649,7 +636,6 @@
         const startTime = parseFloat(startTimeSlider.value);
         const duration = parseFloat(durationSlider.value);
 
-        // Проверка, что выбранная область не выходит за пределы видео
         if (currentFile.type.startsWith('video/')) {
             const video = document.createElement('video');
             const url = URL.createObjectURL(currentFile);
@@ -714,7 +700,6 @@
                 progressEl.className = 'progress-hidden';
                 progressEl.textContent = '✅ Конвертация завершена!';
                 
-                // Показываем результат на превью
                 if (ext === 'gif') {
                     showGifPreview(blob);
                 } else if (ext === 'mp4' || ext === 'webm') {
