@@ -32,12 +32,16 @@
     let previewVideo = null;
     let previewInterval = null;
     let isPreviewing = false;
+    let previewStartTime = 0;
+    let previewDuration = 5;
 
     // Size presets
     const sizePresets = {
         'small': { width: 320, height: 240 },
         'medium': { width: 480, height: 360 },
-        'large': { width: 640, height: 480 }
+        'large': { width: 640, height: 480 },
+        'xlarge': { width: 854, height: 480 },
+        'hd': { width: 1280, height: 720 }
     };
 
     // Update labels
@@ -61,7 +65,6 @@
             showPreview(currentFile);
             progressEl.className = 'progress-hidden';
             progressEl.textContent = '';
-            // Обновляем максимальные значения слайдеров
             updateSliderLimits(currentFile);
         }
     });
@@ -102,7 +105,7 @@
             video.onloadedmetadata = function() {
                 const maxDuration = Math.floor(video.duration);
                 startTimeSlider.max = Math.max(0, maxDuration - 0.5);
-                durationSlider.max = Math.min(10, maxDuration);
+                durationSlider.max = Math.min(30, maxDuration);
                 if (parseFloat(startTimeSlider.value) + parseFloat(durationSlider.value) > maxDuration) {
                     startTimeSlider.value = Math.max(0, maxDuration - parseFloat(durationSlider.value));
                     startTimeVal.textContent = startTimeSlider.value;
@@ -181,72 +184,88 @@
 
         stopPreview();
 
-        const startTime = parseFloat(startTimeSlider.value);
-        const duration = parseFloat(durationSlider.value);
+        previewStartTime = parseFloat(startTimeSlider.value);
+        previewDuration = parseFloat(durationSlider.value);
         
         const video = document.createElement('video');
         const url = URL.createObjectURL(currentFile);
         video.src = url;
         video.muted = true;
-        video.currentTime = startTime;
+        video.currentTime = previewStartTime;
 
         video.onloadedmetadata = function() {
             canvas.width = Math.min(video.videoWidth, 1280);
             canvas.height = Math.min(video.videoHeight, 720);
-            video.play();
-            isPreviewing = true;
-            previewVideo = video;
+            
+            video.play().then(() => {
+                isPreviewing = true;
+                previewVideo = video;
 
-            let startTime2 = performance.now();
-            let elapsed = 0;
+                let startTime2 = performance.now();
+                let elapsed = 0;
 
-            previewInterval = setInterval(() => {
-                if (video.ended || elapsed >= duration) {
-                    stopPreview();
-                    return;
-                }
-                
-                elapsed = (performance.now() - startTime2) / 1000;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                previewInterval = setInterval(() => {
+                    if (video.ended || elapsed >= previewDuration) {
+                        stopPreview();
+                        // После завершения показываем последний кадр
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        return;
+                    }
+                    
+                    elapsed = (performance.now() - startTime2) / 1000;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // Показываем прогресс
+                    const progress = Math.round((elapsed / previewDuration) * 100);
+                    progressEl.textContent = `🎬 Предпросмотр: ${progress}%`;
+                    progressEl.className = 'progress-visible';
+
+                    // Отрисовываем рамку области захвата
+                    const size = sizePresets[sizeSelect.value] || sizePresets.medium;
+                    const scaleX = canvas.width / video.videoWidth;
+                    const scaleY = canvas.height / video.videoHeight;
+                    const boxWidth = size.width * scaleX;
+                    const boxHeight = size.height * scaleY;
+                    const boxX = (canvas.width - boxWidth) / 2;
+                    const boxY = (canvas.height - boxHeight) / 2;
+                    
+                    ctx.strokeStyle = 'rgba(100, 200, 255, 0.8)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([8, 8]);
+                    ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+                    ctx.setLineDash([]);
+                    
+                    ctx.fillStyle = 'rgba(100, 200, 255, 0.1)';
+                    ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+                    
+                    // Подпись размера
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.font = '12px Inter, sans-serif';
+                    ctx.fillText(`${size.width}x${size.height}`, boxX + 8, boxY + 20);
+
+                    if (elapsed >= previewDuration) {
+                        stopPreview();
+                        // Показываем последний кадр
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    }
+                }, 1000 / 30);
+            }).catch((err) => {
+                console.error('Preview error:', err);
+                stopPreview();
+                // Показываем текущий кадр
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // Показываем прогресс
-                const progress = Math.round((elapsed / duration) * 100);
-                progressEl.textContent = `🎬 Предпросмотр: ${progress}%`;
-                progressEl.className = 'progress-visible';
-
-                // Отрисовываем рамку области захвата
-                const size = sizePresets[sizeSelect.value] || sizePresets.medium;
-                const scaleX = canvas.width / video.videoWidth;
-                const scaleY = canvas.height / video.videoHeight;
-                const boxWidth = size.width * scaleX;
-                const boxHeight = size.height * scaleY;
-                const boxX = (canvas.width - boxWidth) / 2;
-                const boxY = (canvas.height - boxHeight) / 2;
-                
-                ctx.strokeStyle = 'rgba(100, 200, 255, 0.8)';
-                ctx.lineWidth = 2;
-                ctx.setLineDash([8, 8]);
-                ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
-                ctx.setLineDash([]);
-                
-                ctx.fillStyle = 'rgba(100, 200, 255, 0.1)';
-                ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
-                
-                // Подпись размера
-                ctx.fillStyle = 'rgba(255,255,255,0.6)';
-                ctx.font = '12px Inter, sans-serif';
-                ctx.fillText(`${size.width}x${size.height}`, boxX + 8, boxY + 20);
-
-                if (elapsed >= duration) {
-                    stopPreview();
-                }
-            }, 1000 / 30);
+                progressEl.textContent = '⚠️ Ошибка предпросмотра';
+                progressEl.className = 'progress-hidden';
+                setTimeout(() => {
+                    progressEl.textContent = '';
+                }, 3000);
+            });
         };
 
         video.onerror = function() {
-            alert('Ошибка загрузки видео для предпросмотра');
             stopPreview();
+            alert('Ошибка загрузки видео для предпросмотра');
         };
         video.load();
     }
@@ -259,6 +278,7 @@
         }
         if (previewVideo) {
             previewVideo.pause();
+            previewVideo.currentTime = 0;
             previewVideo.src = '';
             previewVideo = null;
         }
@@ -284,20 +304,20 @@
 
             video.onloadeddata = function() {
                 const sizePreset = sizePresets[size] || sizePresets.medium;
-                const width = Math.min(sizePreset.width, video.videoWidth);
-                const height = Math.min(sizePreset.height, video.videoHeight);
                 
                 // Сохраняем соотношение сторон
                 const aspectRatio = video.videoWidth / video.videoHeight;
-                let finalWidth = width;
-                let finalHeight = height;
-                if (width / height > aspectRatio) {
-                    finalHeight = Math.round(width / aspectRatio);
+                let finalWidth = Math.min(sizePreset.width, video.videoWidth);
+                let finalHeight = Math.min(sizePreset.height, video.videoHeight);
+                
+                if (finalWidth / finalHeight > aspectRatio) {
+                    finalHeight = Math.round(finalWidth / aspectRatio);
                 } else {
-                    finalWidth = Math.round(height * aspectRatio);
+                    finalWidth = Math.round(finalHeight * aspectRatio);
                 }
 
-                const totalFrames = Math.min(Math.floor(duration * fps), 100);
+                // Увеличиваем количество кадров для плавности
+                const totalFrames = Math.min(Math.floor(duration * fps), 200);
                 const frameDelay = Math.floor(1000 / fps);
 
                 const captureCanvas = document.createElement('canvas');
@@ -361,9 +381,9 @@
         }
 
         const qualityMap = {
-            'low': 20,
-            'medium': 10,
-            'high': 3
+            'low': 30,
+            'medium': 15,
+            'high': 5
         };
 
         const imagePromises = dataUrls.map((dataUrl) => {
@@ -373,9 +393,13 @@
                     resolveImg(img);
                 };
                 img.onerror = function() {
+                    // Пробуем загрузить повторно
                     const fallbackImg = new Image();
                     fallbackImg.onload = function() {
                         resolveImg(fallbackImg);
+                    };
+                    fallbackImg.onerror = function() {
+                        resolveImg(null);
                     };
                     fallbackImg.src = dataUrl;
                 };
@@ -393,8 +417,9 @@
 
             progressEl.textContent = `🖼️ Создание GIF из ${validImages.length} кадров...`;
 
-            const gifWidth = Math.min(validImages[0].naturalWidth || 480, 480);
-            const gifHeight = Math.min(validImages[0].naturalHeight || 360, 360);
+            // Используем размеры первого кадра
+            const gifWidth = Math.min(validImages[0].naturalWidth, 480);
+            const gifHeight = Math.min(validImages[0].naturalHeight, 360);
 
             const options = {
                 images: validImages,
@@ -402,7 +427,7 @@
                 gifHeight: gifHeight,
                 frameDuration: delay / 10,
                 sampleInterval: qualityMap[quality] || 10,
-                numWorkers: 1,
+                numWorkers: 2,
                 backgroundColor: '#000000',
                 transparent: null,
                 progressCallback: function(progress) {
@@ -416,25 +441,15 @@
                     progressEl.textContent = '✅ GIF готов!';
                     
                     try {
-                        fetch(obj.image)
-                            .then(res => res.blob())
-                            .then(blob => {
-                                resolve(blob);
-                            })
-                            .catch(() => {
-                                try {
-                                    const byteString = atob(obj.image.split(',')[1]);
-                                    const ab = new ArrayBuffer(byteString.length);
-                                    const ia = new Uint8Array(ab);
-                                    for (let i = 0; i < byteString.length; i++) {
-                                        ia[i] = byteString.charCodeAt(i);
-                                    }
-                                    const blob = new Blob([ab], { type: 'image/gif' });
-                                    resolve(blob);
-                                } catch (e) {
-                                    reject(new Error('Ошибка конвертации GIF: ' + e.message));
-                                }
-                            });
+                        // Конвертируем base64 в blob
+                        const byteString = atob(obj.image.split(',')[1]);
+                        const ab = new ArrayBuffer(byteString.length);
+                        const ia = new Uint8Array(ab);
+                        for (let i = 0; i < byteString.length; i++) {
+                            ia[i] = byteString.charCodeAt(i);
+                        }
+                        const blob = new Blob([ab], { type: 'image/gif' });
+                        resolve(blob);
                     } catch (err) {
                         reject(new Error('Ошибка обработки GIF: ' + err.message));
                     }
@@ -458,19 +473,18 @@
 
             video.onloadeddata = function() {
                 const sizePreset = sizePresets[size] || sizePresets.medium;
-                const width = Math.min(sizePreset.width, video.videoWidth);
-                const height = Math.min(sizePreset.height, video.videoHeight);
                 
                 const aspectRatio = video.videoWidth / video.videoHeight;
-                let finalWidth = width;
-                let finalHeight = height;
-                if (width / height > aspectRatio) {
-                    finalHeight = Math.round(width / aspectRatio);
+                let finalWidth = Math.min(sizePreset.width, video.videoWidth);
+                let finalHeight = Math.min(sizePreset.height, video.videoHeight);
+                
+                if (finalWidth / finalHeight > aspectRatio) {
+                    finalHeight = Math.round(finalWidth / aspectRatio);
                 } else {
-                    finalWidth = Math.round(height * aspectRatio);
+                    finalWidth = Math.round(finalHeight * aspectRatio);
                 }
 
-                const totalFrames = Math.min(Math.floor(duration * fps), 300);
+                const totalFrames = Math.min(Math.floor(duration * fps), 500);
                 const captureCanvas = document.createElement('canvas');
                 captureCanvas.width = finalWidth;
                 captureCanvas.height = finalHeight;
@@ -478,8 +492,8 @@
 
                 const stream = captureCanvas.captureStream(fps);
                 const recorder = new MediaRecorder(stream, {
-                    mimeType: 'video/webm',
-                    videoBitsPerSecond: 5000000
+                    mimeType: 'video/webm;codecs=vp9',
+                    videoBitsPerSecond: 8000000
                 });
 
                 const chunks = [];
@@ -492,7 +506,7 @@
                     resolve(blob);
                 };
 
-                recorder.start();
+                recorder.start(100);
 
                 let currentFrame = 0;
                 let videoStartTime = startTime;
@@ -594,10 +608,10 @@
         const url = URL.createObjectURL(blob);
         const img = new Image();
         img.onload = function() {
-            canvas.width = img.width;
-            canvas.height = img.height;
+            canvas.width = Math.min(img.width, 1280);
+            canvas.height = Math.min(img.height, 720);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             URL.revokeObjectURL(url);
         };
         img.onerror = function() {
@@ -606,8 +620,8 @@
             vid.src = url;
             vid.muted = true;
             vid.onloadeddata = function() {
-                canvas.width = vid.videoWidth || 640;
-                canvas.height = vid.videoHeight || 360;
+                canvas.width = Math.min(vid.videoWidth || 640, 1280);
+                canvas.height = Math.min(vid.videoHeight || 360, 720);
                 ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
                 URL.revokeObjectURL(url);
             };
@@ -709,8 +723,8 @@
                     vid.src = url;
                     vid.muted = true;
                     vid.onloadeddata = function() {
-                        canvas.width = vid.videoWidth || 640;
-                        canvas.height = vid.videoHeight || 360;
+                        canvas.width = Math.min(vid.videoWidth || 640, 1280);
+                        canvas.height = Math.min(vid.videoHeight || 360, 720);
                         ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
                         URL.revokeObjectURL(url);
                     };
