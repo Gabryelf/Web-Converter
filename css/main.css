@@ -1,0 +1,6 @@
+/* =====  MAIN STYLES ===== */
+/* ===== главный файл импорта стилей ===== */
+@import 'base.css';
+@import 'sidebar.css';
+@import 'components.css';
+@import 'canvas.css';

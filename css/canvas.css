@@ -1,0 +1,94 @@
+/* =====  CANVAS STYLES ===== */
+/* ===== стили канваса для отображения результата конвертации ===== */
+.canvas-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 12px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.canvas-wrapper {
+    flex: 1;
+    background: #0b0d15;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#previewCanvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #0f121b;
+}
+
+.canvas-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.canvas-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.overlay-content {
+    text-align: center;
+    color: #e8f0fa;
+}
+
+.overlay-content span {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.overlay-content p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.canvas-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 11px;
+    color: #6a7f99;
+}
+
+.progress-hidden {
+    display: none;
+}
+
+.progress-visible {
+    display: block;
+    color: #64c8ff;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@media (max-width: 700px) {
+    .canvas-area { min-height: 50%; padding: 12px; }
+}
