@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ConvertPro — Универсальный конвертер</title>
+    <title>ConvertPro — Универсальный конвертер v2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -77,6 +77,7 @@
                     <option value="low">Низкое (быстро)</option>
                     <option value="medium" selected>Среднее</option>
                     <option value="high">Высокое (медленно)</option>
+                    <option value="ultra">Ультра (очень медленно)</option>
                 </select>
             </div>
             <div class="select-group">
@@ -87,6 +88,7 @@
                     <option value="15" selected>15</option>
                     <option value="24">24</option>
                     <option value="30">30</option>
+                    <option value="60">60</option>
                 </select>
             </div>
             <div class="select-group">
@@ -127,6 +129,7 @@
 
 <!-- Подключаем gifshot -->
 <script src="https://cdn.jsdelivr.net/npm/gifshot@0.4.5/dist/gifshot.min.js"></script>
-<script src="converter.js"></script>
+<!-- Основной JavaScript с модулями -->
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
