@@ -2,8 +2,8 @@
 // МОДУЛЬ КОНВЕРТАЦИИ --> WEBM
 // =============================================================
 
-import { CONFIG } from '../config.js';
-import { calculateAspectRatio } from '../utils.js';
+import { CONFIG } from '../../config.js';
+import { calculateAspectRatio } from '../../utils.js';
 
 export class WebmConverter {
     constructor(state, uiController) {

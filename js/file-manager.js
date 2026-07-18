@@ -2,8 +2,6 @@
 // ФАЙЛОВЫЙ ОБРАБОТЧИК - МЕНЕДЖЕР
 // =============================================================
 
-import { formatFileSize, getFileExtension } from './utils.js';
-
 export class FileManager {
     constructor(state, uiController) {
         this.state = state;

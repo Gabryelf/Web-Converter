@@ -2,7 +2,7 @@
 // МОДУЛЬ КОНВЕРТАЦИИ --> WAV
 // =============================================================
 
-import { writeString } from '../utils.js';
+import { writeString } from '../../utils.js';
 
 export class AudioConverter {
     async convertToWav(file) {

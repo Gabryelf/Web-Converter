@@ -2,8 +2,8 @@
 // МОДУЛЬ КОНВЕРТАЦИИ --> GIF 
 // =============================================================
 
-import { CONFIG } from '../config.js';
-import { calculateAspectRatio } from '../utils.js';
+import { CONFIG } from '../../config.js';
+import { calculateAspectRatio } from '../../utils.js';
 
 export class GifConverter {
     constructor(state, uiController) {

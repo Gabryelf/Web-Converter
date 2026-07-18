@@ -3,120 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ConvertPro — Универсальный конвертер v2.0</title>
+    <title>ConvertPro — Универсальный конвертер и редактор</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <div class="app">
-    <aside class="sidebar">
+    <!-- Боковая панель -->
+    <aside class="sidebar" id="sidebar">
         <div class="logo">
             <div class="logo-icon">⚡</div>
-            <span>WEb Converter</span>
+            <span>ConvertPro</span>
         </div>
 
-        <div class="sidebar-section">
-            <div class="section-title">📂 Исходный файл</div>
-            <div class="upload-area" id="fileUploadArea">
-                <input type="file" id="sourceFileInput" accept="video/*,audio/*" hidden>
-                <div class="upload-placeholder">
-                    <span class="upload-icon">📄</span>
-                    <span>Выберите файл</span>
-                    <small>MP4, WEBM, MP3, WAV, OGG</small>
+        <!-- Вкладки навигации -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="converter">
+                <span class="tab-icon">🔄</span>
+                <span>Конвертер</span>
+            </button>
+            <button class="tab-btn" data-tab="editor">
+                <span class="tab-icon">✂️</span>
+                <span>Редактор</span>
+            </button>
+        </div>
+
+        <!-- Контент вкладок -->
+        <div class="tab-content" id="tabContent">
+            <!-- Вкладка Конвертер -->
+            <div class="tab-panel active" id="tab-converter">
+                <div class="sidebar-section">
+                    <div class="section-title">📂 Исходный файл</div>
+                    <div class="upload-area" id="fileUploadArea">
+                        <input type="file" id="sourceFileInput" accept="video/*,audio/*" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📄</span>
+                            <span>Выберите файл</span>
+                            <small>MP4, WEBM, MP3, WAV, OGG</small>
+                        </div>
+                    </div>
+                    <div class="file-status" id="fileStatus">Файл не выбран</div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">⚙️ Форматы</div>
+                    <div class="select-group">
+                        <label>Из (исходный)</label>
+                        <select id="fromFormat">
+                            <option value="auto">🔍 Авто (по файлу)</option>
+                            <option value="mp4">🎬 MP4</option>
+                            <option value="webm">🎬 WEBM</option>
+                            <option value="mp3">🎵 MP3</option>
+                            <option value="wav">🎶 WAV</option>
+                            <option value="ogg">🎶 OGG</option>
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <label>В (целевой)</label>
+                        <select id="toFormat">
+                            <option value="gif">🖼️ GIF</option>
+                            <option value="webm">🎬 WEBM</option>
+                            <option value="wav">🎶 WAV</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">✂️ Область захвата</div>
+                    <div class="capture-controls">
+                        <div class="slider-group">
+                            <label>Начало (сек) <span id="startTimeVal">0</span></label>
+                            <input type="range" id="startTimeSlider" min="0" max="10" value="0" step="0.5">
+                        </div>
+                        <div class="slider-group">
+                            <label>Длительность (сек) <span id="durationVal">5</span></label>
+                            <input type="range" id="durationSlider" min="0.5" max="30" value="5" step="0.5">
+                        </div>
+                        <div style="display:flex; gap: 10px; margin-top: 8px;">
+                            <button id="previewSelectionBtn" class="btn-secondary" style="flex:1;">▶️ Предпросмотр</button>
+                            <button id="stopPreviewBtn" class="btn-secondary" style="flex:1;">⏹️ Стоп</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">🎛️ Настройки качества</div>
+                    <div class="select-group">
+                        <label>Качество (GIF)</label>
+                        <select id="qualitySelect">
+                            <option value="low">Низкое (быстро)</option>
+                            <option value="medium" selected>Среднее</option>
+                            <option value="high">Высокое (медленно)</option>
+                            <option value="ultra">Ультра</option>
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <label>FPS</label>
+                        <select id="fpsSelect">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15" selected>15</option>
+                            <option value="24">24</option>
+                            <option value="30">30</option>
+                            <option value="60">60</option>
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <label>Размер GIF</label>
+                        <select id="sizeSelect">
+                            <option value="small">Маленький (320x240)</option>
+                            <option value="medium" selected>Средний (480x360)</option>
+                            <option value="large">Большой (640x480)</option>
+                            <option value="xlarge">Очень большой (854x480)</option>
+                            <option value="hd">HD (1280x720)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions">
+                    <button id="convertBtn" class="btn-primary">🔄 Конвертировать</button>
+                    <button id="resetBtn" class="btn-secondary">🗑️ Очистить</button>
+                    <button id="downloadBtn" class="btn-export" disabled>⬇️ Скачать</button>
                 </div>
             </div>
-            <div class="file-status" id="fileStatus">Файл не выбран</div>
-        </div>
 
-        <div class="sidebar-section">
-            <div class="section-title">⚙️ Форматы</div>
-            <div class="select-group">
-                <label>Из (исходный)</label>
-                <select id="fromFormat">
-                    <option value="auto">🔍 Авто (по файлу)</option>
-                    <option value="mp4">🎬 MP4</option>
-                    <option value="webm">🎬 WEBM</option>
-                    <option value="mp3">🎵 MP3</option>
-                    <option value="wav">🎶 WAV</option>
-                    <option value="ogg">🎶 OGG</option>
-                </select>
-            </div>
-            <div class="select-group">
-                <label>В (целевой)</label>
-                <select id="toFormat">
-                    <option value="gif">🖼️ GIF</option>
-                    <option value="webm">🎬 WEBM</option>
-                    <option value="wav">🎶 WAV</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="sidebar-section">
-            <div class="section-title">✂️ Область захвата</div>
-            <div class="capture-controls">
-                <div class="slider-group">
-                    <label>Начало (сек) <span id="startTimeVal">0</span></label>
-                    <input type="range" id="startTimeSlider" min="0" max="10" value="0" step="0.5">
+            <!-- Вкладка Редактор -->
+            <div class="tab-panel" id="tab-editor">
+                <div class="sidebar-section">
+                    <div class="section-title">📂 Исходное видео</div>
+                    <div class="upload-area" id="editorUploadArea">
+                        <input type="file" id="editorFileInput" accept="video/*" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">🎬</span>
+                            <span>Выберите видео</span>
+                            <small>MP4, WEBM, AVI, MOV</small>
+                        </div>
+                    </div>
+                    <div class="file-status" id="editorFileStatus">Файл не выбран</div>
                 </div>
-                <div class="slider-group">
-                    <label>Длительность (сек) <span id="durationVal">5</span></label>
-                    <input type="range" id="durationSlider" min="0.5" max="30" value="5" step="0.5">
-                </div>
-                <div style="display:flex; gap: 10px; margin-top: 8px;">
-                    <button id="previewSelectionBtn" class="btn-secondary" style="flex:1;">▶️ Предпросмотр</button>
-                    <button id="stopPreviewBtn" class="btn-secondary" style="flex:1;">⏹️ Стоп</button>
-                </div>
-            </div>
-        </div>
 
-        <div class="sidebar-section">
-            <div class="section-title">🎛️ Настройки качества</div>
-            <div class="select-group">
-                <label>Качество (GIF)</label>
-                <select id="qualitySelect">
-                    <option value="low">Низкое (быстро)</option>
-                    <option value="medium" selected>Среднее</option>
-                    <option value="high">Высокое (медленно)</option>
-                    <option value="ultra">Ультра (очень медленно)</option>
-                </select>
-            </div>
-            <div class="select-group">
-                <label>FPS</label>
-                <select id="fpsSelect">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15" selected>15</option>
-                    <option value="24">24</option>
-                    <option value="30">30</option>
-                    <option value="60">60</option>
-                </select>
-            </div>
-            <div class="select-group">
-                <label>Размер GIF</label>
-                <select id="sizeSelect">
-                    <option value="small">Маленький (320x240)</option>
-                    <option value="medium" selected>Средний (480x360)</option>
-                    <option value="large">Большой (640x480)</option>
-                    <option value="xlarge">Очень большой (854x480)</option>
-                    <option value="hd">HD (1280x720)</option>
-                </select>
-            </div>
-        </div>
+                <div class="sidebar-section">
+                    <div class="section-title">✂️ Обрезка</div>
+                    <div class="slider-group">
+                        <label>Начало (сек) <span id="editorStartTimeVal">0</span></label>
+                        <input type="range" id="editorStartTimeSlider" min="0" max="10" value="0" step="0.5">
+                    </div>
+                    <div class="slider-group">
+                        <label>Конец (сек) <span id="editorEndTimeVal">10</span></label>
+                        <input type="range" id="editorEndTimeSlider" min="1" max="30" value="10" step="0.5">
+                    </div>
+                </div>
 
-        <div class="sidebar-actions">
-            <button id="convertBtn" class="btn-primary">🔄 Конвертировать</button>
-            <button id="resetBtn" class="btn-secondary">🗑️ Очистить</button>
-            <button id="downloadBtn" class="btn-export" disabled>⬇️ Скачать</button>
+                <div class="sidebar-section">
+                    <div class="section-title">🎨 Эффекты</div>
+                    <div class="effects-grid">
+                        <button class="effect-btn" data-effect="none">⬜ Без эффекта</button>
+                        <button class="effect-btn" data-effect="grayscale">⚫ Черно-белый</button>
+                        <button class="effect-btn" data-effect="sepia">🟫 Сепия</button>
+                        <button class="effect-btn" data-effect="brightness">☀️ Яркость</button>
+                        <button class="effect-btn" data-effect="contrast">🌓 Контраст</button>
+                        <button class="effect-btn" data-effect="blur">🌀 Размытие</button>
+                        <button class="effect-btn" data-effect="pixelate">📱 Пикселизация</button>
+                        <button class="effect-btn" data-effect="invert">🎨 Инверсия</button>
+                    </div>
+                    <div class="effect-controls" id="effectControls" style="display:none; margin-top: 10px;">
+                        <div class="slider-group">
+                            <label>Интенсивность: <span id="effectIntensityVal">50</span>%</label>
+                            <input type="range" id="effectIntensitySlider" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">🎵 Аудио</div>
+                    <div class="audio-controls">
+                        <div class="select-group">
+                            <label>Действие</label>
+                            <select id="audioAction">
+                                <option value="keep">Оставить оригинал</option>
+                                <option value="remove">Удалить звук</option>
+                                <option value="replace">Заменить</option>
+                            </select>
+                        </div>
+                        <div id="audioUploadArea" style="display:none; margin-top: 8px;">
+                            <div class="upload-area" id="audioFileUploadArea">
+                                <input type="file" id="audioFileInput" accept="audio/*" hidden>
+                                <div class="upload-placeholder" style="padding: 8px;">
+                                    <span>🎵 Выберите аудиофайл</span>
+                                    <small>MP3, WAV, OGG</small>
+                                </div>
+                            </div>
+                            <div class="file-status" id="audioFileStatus">Аудио не выбрано</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-title">🏷️ Водяные знаки</div>
+                    <div class="watermark-controls">
+                        <div class="select-group">
+                            <label>Тип</label>
+                            <select id="watermarkType">
+                                <option value="none">Без водяного знака</option>
+                                <option value="text">Текст</option>
+                                <option value="image">Изображение</option>
+                            </select>
+                        </div>
+                        <div id="watermarkTextControls" style="display:none; margin-top: 8px;">
+                            <input type="text" id="watermarkText" placeholder="Введите текст" value="© ConvertPro">
+                            <div style="display:flex; gap: 8px; margin-top: 8px;">
+                                <select id="watermarkPosition" style="flex:1;">
+                                    <option value="top-left">Верхний левый</option>
+                                    <option value="top-right">Верхний правый</option>
+                                    <option value="bottom-left" selected>Нижний левый</option>
+                                    <option value="bottom-right">Нижний правый</option>
+                                    <option value="center">Центр</option>
+                                </select>
+                                <input type="color" id="watermarkColor" value="#ffffff" style="width:40px; height:36px; border:none; padding:0; cursor:pointer;">
+                            </div>
+                            <div class="slider-group" style="margin-top:8px;">
+                                <label>Прозрачность: <span id="watermarkOpacityVal">50</span>%</label>
+                                <input type="range" id="watermarkOpacity" min="0" max="100" value="50">
+                            </div>
+                        </div>
+                        <div id="watermarkImageControls" style="display:none; margin-top: 8px;">
+                            <div class="upload-area" id="watermarkImageUpload">
+                                <input type="file" id="watermarkImageInput" accept="image/*" hidden>
+                                <div class="upload-placeholder" style="padding: 8px;">
+                                    <span>🖼️ Выберите изображение</span>
+                                    <small>PNG с прозрачностью</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions">
+                    <button id="applyEffectsBtn" class="btn-primary">🎬 Применить изменения</button>
+                    <button id="resetEditorBtn" class="btn-secondary">🗑️ Сбросить</button>
+                    <button id="exportVideoBtn" class="btn-export" disabled>⬇️ Экспортировать</button>
+                </div>
+            </div>
         </div>
     </aside>
 
+    <!-- Основная область -->
     <main class="canvas-area">
         <div class="canvas-wrapper">
             <canvas id="previewCanvas" width="1280" height="720"></canvas>
             <div class="canvas-overlay" id="canvasOverlay">
                 <div class="overlay-content">
                     <span>🔄</span>
-                    <p>Загрузите файл и выберите формат</p>
+                    <p>Загрузите файл и выберите режим работы</p>
                 </div>
             </div>
         </div>
