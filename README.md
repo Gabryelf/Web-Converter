@@ -1,109 +1,192 @@
-<div align="center">
 
-<!-- Логотип и заголовок -->
-<img src="https://readme-typing-svg.herokuapp.com/?font=Roboto+Slab&color=37bcf7&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&lines=🎬+StreamFlow+DB;🚀+Multi-Database+Platform;💫+PostgreSQL+MySQL+MongoDB" alt="Header"/>
-
-<!-- Статистика -->
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Gabryelf&show_icons=true&theme=radical" height="150"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Gabryelf&layout=compact&theme=radical" height="150"/>
+  <img src="https://img.shields.io/badge/version-0.0.3-blue?style=for-the-badge&logo=github" alt="Version"/>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License"/>
+  <img src="https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript" alt="JavaScript"/>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/>
 </div>
 
-<!-- Streak -->
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Gabryelf&theme=radical" alt="mystreak"/>
-
-<!-- Анимированная разделительная линия -->
-![divider](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
-
-## 🛠️ Tech Stack
-
-<!-- Иконки технологий -->
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=python,django,fastapi,flask,postgresql,mysql,mongodb,redis,docker,aws,git,github,vscode,pycharm,linux,bash&theme=dark&perline=8" />
-</p>
-
-<!-- Badges -->
 <div align="center">
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-
+  <h1>⚡ ConvertPro</h1>
+  <h3>Универсальный конвертер и редактор мультимедиа</h3>
+  <p>
+    <strong>Конвертируйте, редактируйте, улучшайте ваши медиафайлы</strong>
+  </p>
 </div>
 
-![divider](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
+<br/>
 
-## 📊 GitHub Analytics
-
-<!-- Активность -->
 <div align="center">
-  
-[![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=Gabryelf&bg_color=0d1117&color=37bcf7&line=37bcf7&point=ffffff&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
-
+  <img src="https://github.com/Gabryelf/Web-Converter/blob/main/docs/screen_1.png" alt="ConvertPro Preview" style="border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);"/>
 </div>
 
-<!-- Трофеи -->
-<div align="center">
-  
-[![trophy](https://github-profile-trophy.vercel.app/?username=Gabryelf&theme=radical&no-frame=true&row=1&margin-w=20)](https://github.com/ryo-ma/github-profile-trophy)
+<br/>
 
+## ✨ Особенности
+
+### 🎯 Конвертер
+- 🖼️ **Конвертация в GIF** с настройкой FPS (5-60), качества и размера
+- 🎬 **Конвертация в WebM** с высоким качеством
+- 🎵 **Конвертация в WAV** из любых аудиоформатов
+- ✂️ **Обрезка видео** по времени (выбор начала и длительности)
+- 👁️ **Предпросмотр** выбранной области
+
+### 🎨 Редактор
+- ✂️ **Обрезка видео** с визуальным отображением области
+- 🎭 **7+ эффектов**:
+  - ⚫ Черно-белый
+  - 🟫 Сепия
+  - ☀️ Яркость
+  - 🌓 Контраст
+  - 🌫️ Размытие
+  - 📱 Пикселизация
+  - 🎨 Инверсия
+- 🎚️ **Регулировка интенсивности** эффектов
+- 🎵 **Работа с аудио**:
+  - Оставить оригинал
+  - Удалить звук
+  - Заменить на свой
+- 🏷️ **Водяные знаки**:
+  - Текстовые с настройкой цвета и прозрачности
+  - Изображения с прозрачностью
+
+### 🎛️ Настройки
+- 📐 **Размеры**: от 320x240 до 1280x720
+- 📊 **Качество**: Низкое, Среднее, Высокое, Ультра
+- ⏱️ **FPS**: 5, 10, 15, 24, 30, 60
+- 🎚️ **Интенсивность эффектов**: 0-100%
+
+<br/>
+
+
+### 🌐 Онлайн версия
+
+[🌍 Открыть онлайн демо](https://gabryelf.github.io/Web-Converter/)
+
+<br/>
+
+## 🛠️ Технологии
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="60" height="60"/><br/><b>HTML5</b></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" width="60" height="60"/><br/><b>CSS3</b></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="60" height="60"/><br/><b>JavaScript ES6+</b></td>
+    </tr>
+  </table>
 </div>
 
-![divider](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
+**Используемые библиотеки:**
+- [Gifshot](https://github.com/yahoo/gifshot) - Создание GIF анимаций
+- [Google Fonts](https://fonts.google.com/specimen/Inter) - Шрифт Inter
 
-## 🎯 Project Features
+<br/>
 
-<!-- Карточки фич -->
-<table align="center">
-  <tr>
-    <td align="center" width="200">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968342.png" width="50" alt="PostgreSQL"/>
-      <br/>
-      <strong>PostgreSQL</strong>
-    </td>
-    <td align="center" width="200">
-      <img src="https://cdn-icons-png.flaticon.com/512/1199/1199128.png" width="50" alt="MySQL"/>
-      <br/>
-      <strong>MySQL</strong>
-    </td>
-    <td align="center" width="200">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968342.png" width="50" alt="MongoDB"/>
-      <br/>
-      <strong>MongoDB</strong>
-    </td>
-  </tr>
-</table>
+## 📂 Структура проекта
 
-![divider](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
+```
+convertpro/
+├── index.html              # Главная страница
+├── css/
+│   ├── main.css           # Главный файл стилей
+│   ├── base.css           # Базовые стили
+│   ├── layout.css         # Структура страницы
+│   ├── tabs.css           # Стили вкладок
+│   ├── sidebar.css        # Стили сайдбара
+│   ├── canvas.css         # Стили канваса
+│   ├── components.css     # Общие компоненты
+│   └── editor.css         # Стили редактора
+├── js/
+│   ├── main.js            # Точка входа
+│   ├── config.js          # Конфигурация
+│   ├── state.js           # Глобальное состояние
+│   ├── utils.js           # Утилиты
+│   ├── tabs-manager.js    # Управление вкладками
+│   ├── ui/
+│   │   └── ui-controller.js # Управление UI
+│   └── modules/
+│       ├── converter/
+│       │   ├── gif-converter.js
+│       │   ├── webm-converter.js
+│       │   └── audio-converter.js
+│       └── editor/
+│           └── video-processor.js
+└── libs/
+    └── gifshot.min.js
+```
 
-## 📈 Database Performance
+<br/>
 
-<!-- Сравнительная таблица -->
-| Operation | PostgreSQL | MySQL | MongoDB |
-|-----------|------------|-------|---------|
-| **Insert** | ⚡ Fast | 🟡 Medium | 🚀 Very Fast |
-| **Read** | 🚀 Very Fast | ⚡ Fast | ⚡ Fast |
-| **Complex Queries** | 🚀 Excellent | 🟡 Good | 🔶 Average |
+## 📸 Скриншоты
 
-![divider](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="https://github.com/Gabryelf/Web-Converter/blob/main/docs/screen_1.png" alt="Converter Tab"/></td>
+      <td><img src="https://github.com/Gabryelf/Web-Converter/blob/main/docs/screen_1.png" alt="Editor Tab"/></td>
+    </tr>
+    <tr>
+      <td><em>Вкладка Конвертера</em></td>
+      <td><em>Вкладка Редактора</em></td>
+    </tr>
+  </table>
+</div>
 
-## 🌟 Support
+<br/>
 
-<!-- Кнопки -->
-<p align="center">
-  <a href="https://github.com/Gabryelf/Py_Game_Course/stargazers">
-    <img src="https://img.shields.io/github/stars/Gabryelf/Py_Game_Course?color=gold&style=for-the-badge" alt="Stars"/>
-  </a>
-  <a href="https://github.com/Gabryelf/Py_Game_Course/forks">
-    <img src="https://img.shields.io/github/forks/Gabryelf/Py_Game_Course?color=green&style=for-the-badge" alt="Forks"/>
-  </a>
-  <a href="https://github.com/Gabryelf/Py_Game_Course/issues">
-    <img src="https://img.shields.io/github/issues/YOUR_USERNAME/YOUR_REPO?color=blue&style=for-the-badge" alt="Issues"/>
-  </a>
-  <a href="https://github.com/Gabryelf/Py_Game_Course/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/YOUR_USERNAME/YOUR_REPO?color=red&style=for-the-badge" alt="License"/>
-  </a>
-</p>
+## 🎮 Использование
+
+### Конвертер
+1. 📁 **Загрузите файл** - нажмите на область загрузки или перетащите файл
+2. ⚙️ **Настройте параметры** - выберите формат, FPS, качество, размер
+3. ✂️ **Выберите область** - установите начало и длительность захвата
+4. 👁️ **Предпросмотр** - проверьте выбранную область
+5. 🔄 **Нажмите "Конвертировать"**
+6. ⬇️ **Скачайте результат**
+
+### Редактор
+1. 🎬 **Загрузите видео** - переключитесь на вкладку "Редактор" и загрузите видео
+2. 🎨 **Примените эффекты** - выберите эффект и настройте интенсивность
+3. ✂️ **Обрежьте видео** - установите начало и конец
+4. 🎵 **Настройте аудио** - выберите действие с звуковой дорожкой
+5. 🏷️ **Добавьте водяной знак** - текст или изображение
+6. 🎬 **Нажмите "Применить изменения"** или **"Экспортировать"**
+
+<br/>
+
+## 🔥 Горячие клавиши
+
+| Клавиша | Действие |
+|---------|----------|
+| `Ctrl+1` | Переключиться на вкладку "Конвертер" |
+| `Ctrl+2` | Переключиться на вкладку "Редактор" |
+| `Ctrl+Enter` | Запустить конвертацию/экспорт |
+| `Ctrl+R` | Сбросить все настройки |
+| `Space` | Воспроизвести/остановить предпросмотр |
+
+<br/>
+
+
+## 🙏 Благодарности
+
+- [Gifshot](https://github.com/yahoo/gifshot) за отличную библиотеку для создания GIF
+- [Google Fonts](https://fonts.google.com/) за красивые шрифты
+- Всем контрибьюторам и пользователям ❤️
+
+<br/>
+
+<div align="center">
+  <p>
+    <strong>⭐ Поставьте звезду, если вам понравился проект!</strong>
+  </p>
+  <p>
+    <a href="https://github.com/Gabryelf/Web-Converter/issues">Сообщить о проблеме</a> •
+    <a href="https://github.com/Gabryelf/Web-Converter/discussions">Обсуждения</a> •
+    <a href="https://github.com/Gabryelf/Web-Converter/wiki">Wiki</a>
+  </p>
+  <p>
+    Сделано с ❤️ в России
+  </p>
+</div>
